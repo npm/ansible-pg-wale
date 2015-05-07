@@ -1,0 +1,10 @@
+pg_wale_access_key_id: foo-access-key-id
+pg_wale_secret_access_key: foo-secret-access-key
+pg_wale_s3_prefix: s3://some-bucket/directory/or/whatever
+pg_wale_version: HEAD
+pg_wale_repo: git@github.com:wal-e/wal-e.git
+pg_wale_pg_directory: /mnt/postgresql
+pg_wale_user: postgres
+pg_wale_bin: /usr/local/bin/wal-e
+pg_wale_config: /etc/postgresql/9.3/main/postgresql.conf
+pg_wale_env_folder: /etc/wal-e.d/env

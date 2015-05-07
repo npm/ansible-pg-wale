@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Benjamin Coe <ben@npmjs.com>
+  description: Install and configure Heroku's WAL-E backup tool.
+  min_ansible_version: 1.4
+  version: 1.0.0
+  license: ISC
+  platforms:
+    - name: Ubuntu
+      versions:
+      - precise
+      - trusty
+  categories:
+    - psql
+    - databases
+dependencies: []

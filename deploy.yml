@@ -1,0 +1,4 @@
+---
+- hosts: pg-backups
+  roles:
+    - bcoe.pg-wale

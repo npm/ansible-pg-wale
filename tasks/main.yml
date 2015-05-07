@@ -1,0 +1,76 @@
+- name: install dependent packages
+  sudo: true
+  apt: >
+    name={{item}}
+    state=present
+  with_items:
+    - python-pip
+    - python-dev
+    - lzop
+    - pv
+    - daemontools
+
+- name: clone wal-e tool
+  sudo: true
+  git: >
+    repo={{pg_wale_repo}}
+    dest=/tmp/wal-e
+    version={{pg_wale_version}}
+    force=yes
+    accept_hostkey=yes
+
+- name: install wal-e
+  sudo: true
+  command: python setup.py install
+  args:
+    chdir: /tmp/wal-e
+
+- name: remove the install files
+  sudo: true
+  file: >
+    state=absent
+    path=/tmp/wal-e
+
+- name: create daily base backup
+  sudo: true
+  cron: >
+    name="daily base backup"
+    user={{pg_wale_user}}
+    job="envdir {{pg_wale_env_folder}} {{pg_wale_bin}} -k {{pg_wale_access_key_id}} --s3-prefix={{pg_wale_s3_prefix}} backup-push {{pg_wale_pg_directory}}"
+    special_time=daily
+
+- name: add wal archiving to postgres config
+  sudo: true
+  lineinfile: >
+    dest={{pg_wale_config}}
+    line="archive_command = 'envdir {{pg_wale_env_folder}} {{pg_wale_bin}} -k {{pg_wale_access_key_id}} --s3-prefix={{pg_wale_s3_prefix}} wal-push %p'"
+    regexp='archive_command =.*$'
+
+#- name: reload postgres configuration
+#  command: "psql 'user={{pg_wale_user}} host=0.0.0.0' -c 'SELECT pg_reload_conf();'"
+
+- name: create env directory
+  sudo: true
+  file: >
+    state=directory
+    owner={{pg_wale_user}}
+    group={{pg_wale_user}}
+    path={{pg_wale_env_folder}}
+
+- name: create env file for AWS_SECRET_ACCESS_KEY
+  sudo: true
+  template: >
+    src=AWS_SECRET_ACCESS_KEY.j2
+    dest={{pg_wale_env_folder}}/AWS_SECRET_ACCESS_KEY
+    owner={{pg_wale_user}}
+    group={{pg_wale_user}}
+    mode=640
+
+- name: populate an example recovery file
+  sudo: true
+  template: >
+    src=recovery.example.j2
+    dest={{pg_wale_pg_directory}}/recovery.example
+    owner={{pg_wale_user}}
+    group={{pg_wale_user}}
+    mode=755

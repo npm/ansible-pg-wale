@@ -1,0 +1,5 @@
+[pg-backups]
+replica.example.com pg_wale_s3_prefix=s3://some-bucket/directory/or/whatever
+
+[all:vars]
+ansible_ssh_user=ubuntu
