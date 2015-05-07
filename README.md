@@ -10,21 +10,17 @@ Configure's Heroku's [WAL-E backup tool](https://github.com/wal-e/wal-e) for Ans
 SELECT pg_switch_xlog();
 ```
 
-### I want to manually download a copy of the database
+### database recovery
 
-```shell
-su - postgres -c 'AWS_SECRET_ACCESS_KEY="my-secret" wal-e -k my-key --s3-prefix=s3://my-bucket backup-fetch /mnt/postgresql/ LATEST'
-```
+1. stop the database `sudo service postgresql stop`.
+2. delete the postgres data directory.
+3. look in `recovery.example`, there's a command here for downloading a base
+  copy of the database.
+4. copy `recovery.example` to `recovery.conf`. this will setup recovery from logs.
+5. start postgres.
 
 ### pg_xlog is corrupt, help!
 
 ```shell
 /usr/lib/postgresql/9.3/bin/pg_resetxlog /mnt/postgresql/
 ```
-
-### recovery from logs
-
-1. stop the database `sudo service postgresql stop`.
-2. delete the data directory.
-3. run `su - postgres -c 'AWS_SECRET_ACCESS_KEY="my-secret" wal-e -k my-key --s3-prefix=s3://my-bucket backup-fetch /mnt/postgresql/ LATEST'`
-4. copy `recovery.example` to `recovery.conf`
