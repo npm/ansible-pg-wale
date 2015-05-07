@@ -1,6 +1,6 @@
 # PG-WAL-E
 
-Configure's Heroku's [WAL-E backup tool](https://github.com/wal-e/wal-e) for Ansible.
+Configures Heroku's [WAL-E backup tool](https://github.com/wal-e/wal-e) for Ansible.
 
 ## Useful Commands
 
