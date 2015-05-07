@@ -12,12 +12,12 @@ SELECT pg_switch_xlog();
 
 ### database recovery
 
-1. stop the database `sudo service postgresql stop`.
+1. stop the database: `sudo service postgresql stop`.
 2. delete the postgres data directory.
 3. look in `recovery.example`, there's a command here for downloading a base
   copy of the database.
 4. copy `recovery.example` to `recovery.conf`. this will setup recovery from logs.
-5. start postgres.
+5. start the database: `sudo service postgresql start`
 
 ### pg_xlog is corrupt, help!
 
