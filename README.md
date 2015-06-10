@@ -19,7 +19,7 @@ SELECT pg_switch_xlog();
 Suppose you've corrupted or deleted your postgres data directory:
 
 1. stop the database: `sudo service postgresql stop`.
-2. delete the postgres data directory.
+2. delete everything from the postgres data directory: `sudo rm -rf /mnt/postgresql/*`
 3. look in `recovery.example`, there's a command here for downloading a base
   backup of the database.
 4. copy `recovery.example` to `recovery.conf`. this file directs postgres to perform recovery.
