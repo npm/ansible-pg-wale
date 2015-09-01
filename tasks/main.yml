@@ -31,24 +31,6 @@
     state=absent
     path=/tmp/wal-e
 
-- name: create daily base backup
-  sudo: true
-  cron: >
-    name="daily base backup"
-    user={{pg_wale_user}}
-    job="envdir {{pg_wale_env_folder}} {{pg_wale_bin}} -k {{pg_wale_access_key_id}} --s3-prefix={{pg_wale_s3_prefix}} backup-push {{pg_wale_pg_directory}}"
-    special_time=daily
-
-- name: add wal archiving to postgres config
-  sudo: true
-  lineinfile: >
-    dest={{pg_wale_config}}
-    line="archive_command = 'envdir {{pg_wale_env_folder}} {{pg_wale_bin}} -k {{pg_wale_access_key_id}} --s3-prefix={{pg_wale_s3_prefix}} wal-push %p'"
-    regexp='archive_command =.*$'
-
-#- name: reload postgres configuration
-#  command: "psql 'user={{pg_wale_user}} host=0.0.0.0' -c 'SELECT pg_reload_conf();'"
-
 - name: create env directory
   sudo: true
   file: >
