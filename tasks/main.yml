@@ -4,8 +4,8 @@
     name={{item}}
     state=present
   with_items:
-    - python-pip
-    - python-dev
+    - python3-pip
+    - python3-dev
     - lzop
     - pv
     - daemontools
@@ -21,7 +21,7 @@
 
 - name: install wal-e
   sudo: true
-  command: python setup.py install
+  command: python3 setup.py install
   args:
     chdir: /tmp/wal-e
 
